@@ -1,8 +1,6 @@
 defmodule PaintByNumber do
   def palette_bit_size(color_count) when color_count > 2 do
-    ceil(color_count / 2)
-    |> palette_bit_size()
-    |> Kernel.+(1)
+    palette_bit_size(color_count / 2) + 1
   end
 
   def palette_bit_size(color_count) when color_count > 0 do
@@ -18,7 +16,8 @@ defmodule PaintByNumber do
   end
 
   def prepend_pixel(picture, color_count, pixel_color_index) do
-    <<pixel_color_index::size(palette_bit_size(color_count)), picture::bitstring>>
+    bit_size = palette_bit_size(color_count)
+    <<pixel_color_index::size(bit_size), picture::bits>>
   end
 
   def get_first_pixel(picture, color_count) do
@@ -34,12 +33,12 @@ defmodule PaintByNumber do
   end
 
   defp split_first_pixel(picture, color_count) do
-    count = palette_bit_size(color_count)
-    <<first::size(^count), rest::bitstring>> = picture
+    bit_size = palette_bit_size(color_count)
+    <<first::size(^bit_size), rest::bits>> = picture
     {first, rest}
   end
 
   def concat_pictures(picture1, picture2) do
-    <<picture1::bitstring, picture2::bitstring>>
+    <<picture1::bits, picture2::bits>>
   end
 end
