@@ -1,10 +1,16 @@
 defmodule Username do
   def sanitize(username) do
-    # ä becomes ae
-    # ö becomes oe
-    # ü becomes ue
-    # ß becomes ss
+    Enum.flat_map(username, &do_sanitize/1)
+  end
 
-    # Please implement the sanitize/1 function
+  defp do_sanitize(letter) do
+    case letter do
+      letter when letter in ?a..?z or letter == ?_ -> [letter]
+      ?ä -> ~c"ae"
+      ?ö -> ~c"oe"
+      ?ü -> ~c"ue"
+      ?ß -> ~c"ss"
+      _ -> []
+    end
   end
 end
