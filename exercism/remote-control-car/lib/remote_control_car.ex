@@ -19,9 +19,11 @@ defmodule RemoteControlCar do
   end
 
   def drive(%__MODULE__{battery_percentage: battery} = remote_car) when battery > 0 do
-    remote_car
-    |> Map.update!(:battery_percentage, &(&1 - 1))
-    |> Map.update!(:distance_driven_in_meters, &(&1 + 20))
+    %{
+      remote_car
+      | battery_percentage: battery - 1,
+        distance_driven_in_meters: remote_car.distance_driven_in_meters + 20
+    }
   end
 
   def drive(%__MODULE__{} = remote_car) do
