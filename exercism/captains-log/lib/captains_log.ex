@@ -13,11 +13,7 @@ defmodule CaptainsLog do
     1000 * :rand.uniform() + 41000
   end
 
-  def format_stardate(stardate) when is_float(stardate) do
-    Float.round(stardate, 1) |> to_string()
-  end
-
-  def format_stardate(_stardate) do
-    raise ArgumentError
+  def format_stardate(stardate) do
+    :io_lib.format("~.1f", [stardate]) |> to_string()
   end
 end
