@@ -3,8 +3,8 @@ defmodule NeedForSpeed do
   alias NeedForSpeed.Race
   alias NeedForSpeed.RemoteControlCar, as: Car
 
-  import IO
-  import IO.ANSI, only: [cyan: 0, default_color: 0, green: 0, red: 0]
+  import IO, only: [puts: 1]
+  import IO.ANSI, except: [color: 1]
 
   # Do not edit the code below.
 
