@@ -15,9 +15,9 @@ defmodule BoutiqueInventory do
 
   def increase_quantity(item, count) do
     Map.update!(item, :quantity_by_size, fn quantity_by_size ->
-      for {size, quantity} <- quantity_by_size, into: %{} do
+      Map.new(quantity_by_size, fn {size, quantity} ->
         {size, quantity + count}
-      end
+      end)
     end)
   end
 
