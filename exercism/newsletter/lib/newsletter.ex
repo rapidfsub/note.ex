@@ -1,21 +1,29 @@
 defmodule Newsletter do
   def read_emails(path) do
-    # Please implement the read_emails/1 function
+    File.read!(path) |> String.split("\n", trim: true)
   end
 
   def open_log(path) do
-    # Please implement the open_log/1 function
+    File.open!(path, [:write])
   end
 
   def log_sent_email(pid, email) do
-    # Please implement the log_sent_email/2 function
+    IO.puts(pid, email)
   end
 
   def close_log(pid) do
-    # Please implement the close_log/1 function
+    File.close(pid)
   end
 
   def send_newsletter(emails_path, log_path, send_fun) do
-    # Please implement the send_newsletter/3 function
+    file = open_log(log_path)
+
+    for email <- read_emails(emails_path) do
+      with :ok <- send_fun.(email) do
+        log_sent_email(file, email)
+      end
+    end
+
+    close_log(file)
   end
 end
