@@ -19,5 +19,25 @@ defmodule RPG do
     defstruct []
   end
 
-  # Add code to define the protocol and its implementations below here...
+  defprotocol Edible do
+    def eat(edible, character)
+  end
+
+  defimpl Edible, for: LoafOfBread do
+    def eat(%LoafOfBread{}, %Character{health: health} = character) do
+      {nil, %{character | health: health + 5}}
+    end
+  end
+
+  defimpl Edible, for: ManaPotion do
+    def eat(%ManaPotion{strength: strength}, %Character{mana: mana} = character) do
+      {%EmptyBottle{}, %{character | mana: mana + strength}}
+    end
+  end
+
+  defimpl Edible, for: Poison do
+    def eat(%Poison{}, %Character{} = character) do
+      {%EmptyBottle{}, %{character | health: 0}}
+    end
+  end
 end
