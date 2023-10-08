@@ -1,5 +1,10 @@
 defmodule NeedForSpeed do
   # Add missing aliases and imports here.
+  alias NeedForSpeed.Race
+  alias NeedForSpeed.RemoteControlCar, as: Car
+
+  import IO
+  import IO.ANSI, only: [cyan: 0, default_color: 0, green: 0, red: 0]
 
   # Do not edit the code below.
 
