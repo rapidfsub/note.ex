@@ -4,19 +4,21 @@ defmodule TopSecret do
   end
 
   def decode_secret_message_part({value, _, nodes} = ast, acc) when value in [:def, :defp] do
-    {name, args} =
-      case nodes do
-        [{:when, _, [{name, _, args} | _]} | _] -> {name, args}
-        [{name, _, args} | _] -> {name, args}
-      end
-
-    name = to_string(name)
-    arity = length(args || [])
-    {ast, [binary_part(name, 0, arity) | acc]}
+    {ast, [function_secret_message(nodes) | acc]}
   end
 
   def decode_secret_message_part(ast, acc) do
     {ast, acc}
+  end
+
+  defp function_secret_message([{:when, _, nodes} | _]) do
+    function_secret_message(nodes)
+  end
+
+  defp function_secret_message([{name, _, args} | _]) do
+    name
+    |> to_string()
+    |> binary_part(0, length(args || []))
   end
 
   def decode_secret_message(string) do
