@@ -8,10 +8,7 @@ defmodule WineCellar do
   end
 
   def filter(cellar, color, opts \\ []) do
-    cellar =
-      cellar
-      |> Keyword.filter(&match?({^color, _wine}, &1))
-      |> Keyword.values()
+    cellar = Keyword.get_values(cellar, color)
 
     cellar =
       case Keyword.get(opts, :year) do
