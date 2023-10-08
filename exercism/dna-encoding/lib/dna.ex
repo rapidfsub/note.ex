@@ -12,10 +12,10 @@ defmodule DNA do
   def decode_nucleotide(0b1000), do: ?T
 
   def encode(dna), do: do_encode(dna, <<>>)
-  def do_encode([], acc), do: acc
-  def do_encode([x | xs], acc), do: do_encode(xs, <<acc::bits, encode_nucleotide(x)::4>>)
+  defp do_encode([], acc), do: acc
+  defp do_encode([x | xs], acc), do: do_encode(xs, <<acc::bits, encode_nucleotide(x)::4>>)
 
   def decode(dna), do: do_decode(dna, [])
-  def do_decode(<<>>, acc), do: acc
-  def do_decode(<<x::4, xs::bits>>, acc), do: do_decode(xs, acc ++ [decode_nucleotide(x)])
+  defp do_decode(<<>>, acc), do: acc
+  defp do_decode(<<x::4, xs::bits>>, acc), do: do_decode(xs, acc ++ [decode_nucleotide(x)])
 end
