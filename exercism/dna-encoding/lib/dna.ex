@@ -11,9 +11,11 @@ defmodule DNA do
   def decode_nucleotide(0b0100), do: ?G
   def decode_nucleotide(0b1000), do: ?T
 
-  def encode([]), do: <<>>
-  def encode([nucleotide | rest]), do: <<encode_nucleotide(nucleotide)::4, encode(rest)::bits>>
+  def encode(dna), do: do_encode(dna, <<>>)
+  def do_encode([], acc), do: acc
+  def do_encode([x | xs], acc), do: do_encode(xs, <<acc::bits, encode_nucleotide(x)::4>>)
 
-  def decode(<<>>), do: []
-  def decode(<<code::4, rest::bits>>), do: [decode_nucleotide(code) | decode(rest)]
+  def decode(dna), do: do_decode(dna, []) |> Enum.reverse()
+  def do_decode(<<>>, acc), do: acc
+  def do_decode(<<x::4, xs::bits>>, acc), do: do_decode(xs, [decode_nucleotide(x) | acc])
 end
