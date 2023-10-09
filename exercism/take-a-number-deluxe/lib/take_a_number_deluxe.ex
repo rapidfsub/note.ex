@@ -1,7 +1,7 @@
 defmodule TakeANumberDeluxe do
   alias TakeANumberDeluxe.State
 
-  @behaviour GenServer
+  use GenServer
 
   # Client API
 
