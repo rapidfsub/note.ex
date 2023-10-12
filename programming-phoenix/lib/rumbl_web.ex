@@ -46,6 +46,7 @@ defmodule RumblWeb do
       import RumblWeb.Gettext
 
       unquote(verified_routes())
+      alias RumblWeb.Router.Helpers, as: Routes
     end
   end
 
