@@ -3,6 +3,13 @@ defmodule RangerWeb.AlbumLive.IndexTest do
 
   import Phoenix.LiveViewTest
 
+  setup_all do
+    on_exit(fn ->
+      File.rm_rf!(Ranger.uploads_dir())
+      File.mkdir_p!(Ranger.uploads_dir())
+    end)
+  end
+
   test "user can see previewe of picture to be uploaded", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/albums")
 
@@ -41,6 +48,25 @@ defmodule RangerWeb.AlbumLive.IndexTest do
     |> render_change()
 
     assert has_element?(view, "p", "can't be blank")
+  end
+
+  test "user can submit album with images", %{conn: conn} do
+    {:ok, view, _html} = live(conn, ~p"/albums")
+
+    {:ok, show_view, _html} =
+      view
+      |> upload("moria-door.png")
+      |> create_album("Moria adventures")
+      |> follow_redirect(conn)
+
+    assert has_element?(show_view, "h2", "Moria adventures")
+    assert has_element?(show_view, "[data-role='image']")
+  end
+
+  defp create_album(view, name) do
+    view
+    |> form("#upload-form", %{album: %{name: name}})
+    |> render_submit()
   end
 
   defp upload(view, filename) do
