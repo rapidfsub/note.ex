@@ -1,11 +1,12 @@
-use Mix.Config
+import Config
 
 # Configure your database
 config :rumbl, Rumbl.Repo,
   username: "postgres",
   password: "postgres",
-  database: "rumbl_dev",
   hostname: "localhost",
+  database: "rumbl_dev",
+  stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -13,21 +14,19 @@ config :rumbl, Rumbl.Repo,
 # debugging and code reloading.
 #
 # The watchers configuration can be used to run external
-# watchers to your application. For example, we use it
-# with webpack to recompile .js and .css sources.
+# watchers to your application. For example, we can use it
+# to bundle .js and .css sources.
 config :rumbl, RumblWeb.Endpoint,
-  http: [port: 4000],
-  debug_errors: true,
-  code_reloader: true,
+  # Binding to loopback ipv4 address prevents access from other machines.
+  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
+  http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
+  code_reloader: true,
+  debug_errors: true,
+  secret_key_base: "qQonVBB9eYj8kVwqWa/Zv+/UePS5/BKvgAbsCEUVRL1EStIMQs7uGYRNrcOX9jZN",
   watchers: [
-    node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
-    ]
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -38,7 +37,6 @@ config :rumbl, RumblWeb.Endpoint,
 #
 #     mix phx.gen.cert
 #
-# Note that this task requires Erlang/OTP 20 or later.
 # Run `mix help phx.gen.cert` for more information.
 #
 # The `http:` config above can be replaced with:
@@ -60,10 +58,12 @@ config :rumbl, RumblWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/rumbl_web/{live,views}/.*(ex)$",
-      ~r"lib/rumbl_web/templates/.*(eex)$"
+      ~r"lib/rumbl_web/(controllers|live|components)/.*(ex|heex)$"
     ]
   ]
+
+# Enable dev routes for dashboard and mailbox
+config :rumbl, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
@@ -74,3 +74,9 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Include HEEx debug annotations as HTML comments in rendered markup
+config :phoenix_live_view, :debug_heex_annotations, true
+
+# Disable swoosh api client as it is only required for production adapters.
+config :swoosh, :api_client, false

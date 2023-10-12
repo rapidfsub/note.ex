@@ -5,15 +5,19 @@ defmodule Rumbl.Application do
 
   use Application
 
+  @impl true
   def start(_type, _args) do
-    # List all child processes to be supervised
     children = [
-      # Start the Ecto repository
+      RumblWeb.Telemetry,
       Rumbl.Repo,
-      # Start the endpoint when the application starts
-      RumblWeb.Endpoint
-      # Starts a worker by calling: Rumbl.Worker.start_link(arg)
+      {DNSCluster, query: Application.get_env(:rumbl, :dns_cluster_query) || :ignore},
+      {Phoenix.PubSub, name: Rumbl.PubSub},
+      # Start the Finch HTTP client for sending emails
+      {Finch, name: Rumbl.Finch},
+      # Start a worker by calling: Rumbl.Worker.start_link(arg)
       # {Rumbl.Worker, arg},
+      # Start to serve requests, typically the last entry
+      RumblWeb.Endpoint
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -24,6 +28,7 @@ defmodule Rumbl.Application do
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
+  @impl true
   def config_change(changed, _new, removed) do
     RumblWeb.Endpoint.config_change(changed, removed)
     :ok
