@@ -79,6 +79,24 @@ defmodule RumblWeb do
     end
   end
 
+  def view do
+    quote do
+      use Phoenix.Component
+
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [get_csrf_token: 0, view_module: 1, view_template: 1]
+
+      # HTML escaping functionality
+      import Phoenix.HTML
+      import Phoenix.HTML.Link
+
+      # Core UI components and translation
+      import RumblWeb.Gettext
+      alias RumblWeb.Router.Helpers, as: Routes
+    end
+  end
+
   defp html_helpers do
     quote do
       # HTML escaping functionality

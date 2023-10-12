@@ -1,10 +1,7 @@
 defmodule RumblWeb.UserHTML do
   alias Rumbl.Accounts
-  alias RumblWeb.Router.Helpers, as: Routes
 
-  import Phoenix.HTML.Link
-
-  use RumblWeb, :html
+  use RumblWeb, :view
 
   embed_templates "user_html/*"
 

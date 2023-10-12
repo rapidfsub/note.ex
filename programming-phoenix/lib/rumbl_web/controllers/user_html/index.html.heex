@@ -2,7 +2,7 @@
 <table>
   <%= for user <- @users do %>
     <tr>
-      <td><%= __MODULE__.show(%{user: user}) %></td>
+      <td><%= show(%{user: user}) %></td>
       <td><%= link("View", to: Routes.user_path(@conn, :show, user.id)) %></td>
     </tr>
   <% end %>
