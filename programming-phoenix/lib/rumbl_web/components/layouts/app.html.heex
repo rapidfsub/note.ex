@@ -21,6 +21,17 @@
       >
         Get Started <span aria-hidden="true">&rarr;</span>
       </a>
+
+      <%= if @current_user do %>
+        <div><%= @current_user.username %></div>
+        <%= Phoenix.HTML.Link.link("Log out",
+          to: Routes.session_path(@conn, :delete, @current_user),
+          method: "delete"
+        ) %>
+      <% else %>
+        <%= Phoenix.HTML.Link.link("Register", to: Routes.user_path(@conn, :new)) %>
+        <%= Phoenix.HTML.Link.link("Log in", to: Routes.session_path(@conn, :new)) %>
+      <% end %>
     </div>
   </div>
 </header>

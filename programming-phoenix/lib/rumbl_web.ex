@@ -46,7 +46,6 @@ defmodule RumblWeb do
       import RumblWeb.Gettext
 
       unquote(verified_routes())
-      alias RumblWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -95,7 +94,9 @@ defmodule RumblWeb do
 
       # Core UI components and translation
       import RumblWeb.Gettext
-      alias RumblWeb.Router.Helpers, as: Routes
+
+      # Routes generation with the ~p sigil
+      unquote(verified_routes())
     end
   end
 
@@ -121,6 +122,8 @@ defmodule RumblWeb do
         endpoint: RumblWeb.Endpoint,
         router: RumblWeb.Router,
         statics: RumblWeb.static_paths()
+
+      alias RumblWeb.Router.Helpers, as: Routes
     end
   end
 
