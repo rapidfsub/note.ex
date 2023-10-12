@@ -89,6 +89,7 @@ defmodule RumblWeb do
 
       # HTML escaping functionality
       import Phoenix.HTML
+      import Phoenix.HTML.Form
       import Phoenix.HTML.Link
 
       # Core UI components and translation
