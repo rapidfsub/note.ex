@@ -18,3 +18,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
+
+## Links
+
+  * [Programming Phoenix 1.4: Productive |> Reliable |> Fast by Chris McCord, Bruce Tate and José Valim](https://pragprog.com/titles/phoenix14/programming-phoenix-1-4)
