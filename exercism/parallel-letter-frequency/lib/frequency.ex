@@ -9,13 +9,8 @@ defmodule Frequency do
   @spec frequency([String.t()], pos_integer) :: map
   def frequency(texts, workers) do
     texts
-    |> Stream.chunk_every(workers)
-    |> Stream.flat_map(fn texts ->
-      texts
-      |> Enum.map(&Task.async(fn -> frequency(&1) end))
-      |> Task.await_many()
-    end)
-    |> Enum.reduce(%{}, fn map, acc ->
+    |> Task.async_stream(&frequency/1, max_concurrency: workers)
+    |> Enum.reduce(%{}, fn {:ok, map}, acc ->
       Map.merge(acc, map, fn _key, v1, v2 -> v1 + v2 end)
     end)
   end
