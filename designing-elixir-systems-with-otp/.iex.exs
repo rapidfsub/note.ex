@@ -43,3 +43,14 @@ alias Mastery.Boundary.QuizSession
 QuizSession.select_question(session)
 QuizSession.answer_question(session, "4")
 QuizSession.answer_question(session, "10")
+
+alias Mastery.Examples.Math
+
+Mastery.start_quiz_manager()
+Math.quiz_fields() |> Mastery.build_quiz()
+Math.quiz().title |> Mastery.add_template(Math.template_fields())
+session = Mastery.take_quiz(Math.quiz().title, "mathy@email.com")
+Mastery.select_question(session)
+Mastery.answer_question(session, "wrong")
+Mastery.answer_question(session, "14")
+Mastery.answer_question(session, "2")
