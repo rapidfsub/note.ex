@@ -28,3 +28,11 @@ IO.inspect(quiz.current_question.asked)
 response = Response.new(quiz, email, "3")
 quiz = Quiz.answer_question(quiz, response)
 IO.inspect(quiz.record)
+
+alias Mastery.Examples.Math
+alias Mastery.Boundary.QuizManager
+
+GenServer.start_link(QuizManager, %{}, name: QuizManager)
+QuizManager.build_quiz(title: :quiz)
+QuizManager.add_template(:quiz, Math.template_fields())
+QuizManager.lookup_quiz_by_title(:quiz)
