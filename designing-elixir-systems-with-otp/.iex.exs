@@ -28,3 +28,29 @@ IO.inspect(quiz.current_question.asked)
 response = Response.new(quiz, email, "3")
 quiz = Quiz.answer_question(quiz, response)
 IO.inspect(quiz.record)
+
+alias Mastery.Examples.Math
+alias Mastery.Boundary.QuizManager
+
+GenServer.start_link(QuizManager, %{}, name: QuizManager)
+QuizManager.build_quiz(title: :quiz)
+QuizManager.add_template(:quiz, Math.template_fields())
+QuizManager.lookup_quiz_by_title(:quiz)
+
+alias Mastery.Boundary.QuizSession
+
+{:ok, session} = GenServer.start_link(QuizSession, {Math.quiz(), "mathy@example.com"})
+QuizSession.select_question(session)
+QuizSession.answer_question(session, "4")
+QuizSession.answer_question(session, "10")
+
+alias Mastery.Examples.Math
+
+Mastery.start_quiz_manager()
+Math.quiz_fields() |> Mastery.build_quiz()
+Math.quiz().title |> Mastery.add_template(Math.template_fields())
+session = Mastery.take_quiz(Math.quiz().title, "mathy@email.com")
+Mastery.select_question(session)
+Mastery.answer_question(session, "wrong")
+Mastery.answer_question(session, "14")
+Mastery.answer_question(session, "2")
