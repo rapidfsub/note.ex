@@ -87,4 +87,51 @@ defmodule Mastery.Core.Quiz do
   defp reset_template_cycle(%__MODULE__{} = quiz) do
     quiz
   end
+
+  def answer_question(quiz, %Response{correct: true} = response) do
+    new_quiz =
+      quiz
+      |> inc_record()
+      |> save_response(response)
+
+    maybe_advance(new_quiz, mastered?(new_quiz))
+  end
+
+  def answer_question(quiz, %Response{correct: false} = response) do
+    quiz
+    |> reset_record()
+    |> save_response(response)
+  end
+
+  def save_response(%__MODULE__{} = quiz, %Response{} = response) do
+    %{quiz | last_response: response}
+  end
+
+  def mastered?(%__MODULE__{} = quiz) do
+    score = Map.get(quiz.record, template(quiz).name, 0)
+    score == quiz.mastery
+  end
+
+  defp inc_record(%__MODULE__{current_question: question} = quiz) do
+    new_record = Map.update(quiz.record, question.template.name, 1, &(&1 + 1))
+    %{quiz | record: new_record}
+  end
+
+  defp maybe_advance(%__MODULE__{} = quiz, false = _mastered), do: quiz
+  defp maybe_advance(%__MODULE__{} = quiz, true = _mastered), do: advance(quiz)
+
+  def advance(quiz) do
+    quiz
+    |> move_template(:mastered)
+    |> reset_record()
+    |> reset_used()
+  end
+
+  defp reset_record(%__MODULE__{current_question: question} = quiz) do
+    %{quiz | record: Map.delete(quiz.record, question.template.name)}
+  end
+
+  defp reset_used(%__MODULE__{current_question: question} = quiz) do
+    %{quiz | used: List.delete(quiz.used, question.template)}
+  end
 end
