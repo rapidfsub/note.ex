@@ -36,3 +36,10 @@ GenServer.start_link(QuizManager, %{}, name: QuizManager)
 QuizManager.build_quiz(title: :quiz)
 QuizManager.add_template(:quiz, Math.template_fields())
 QuizManager.lookup_quiz_by_title(:quiz)
+
+alias Mastery.Boundary.QuizSession
+
+{:ok, session} = GenServer.start_link(QuizSession, {Math.quiz(), "mathy@example.com"})
+QuizSession.select_question(session)
+QuizSession.answer_question(session, "4")
+QuizSession.answer_question(session, "10")
