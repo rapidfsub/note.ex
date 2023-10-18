@@ -3,6 +3,8 @@ defmodule Mastery.Application do
   # for more information on OTP Applications
   @moduledoc false
 
+  alias Mastery.Boundary.QuizManager
+
   use Application
 
   @impl true
@@ -10,6 +12,7 @@ defmodule Mastery.Application do
     children = [
       # Starts a worker by calling: Mastery.Worker.start_link(arg)
       # {Mastery.Worker, arg}
+      {QuizManager, [name: QuizManager]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
