@@ -47,14 +47,14 @@ defmodule RationalNumbers do
   @spec pow_rational(a :: rational, n :: integer) :: rational
   def pow_rational({num, den}, n) when n < 0, do: pow_rational({den, num}, -n)
   def pow_rational(_a, n) when n == 0, do: {1, 1}
-  def pow_rational({num, den}, n), do: reduce({Integer.pow(num, n), Integer.pow(den, n)})
+  def pow_rational({num, den}, n), do: reduce({num ** n, den ** n})
 
   @doc """
   Exponentiation of a real number by a rational number
   """
   @spec pow_real(x :: integer, n :: rational) :: float
   def pow_real(x, {num, den}) do
-    :math.pow(x, num / den)
+    x ** (num / den)
   end
 
   @doc """
