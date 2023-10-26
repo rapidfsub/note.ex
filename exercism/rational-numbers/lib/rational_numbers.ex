@@ -1,6 +1,4 @@
 defmodule RationalNumbers do
-  import Kernel, except: [abs: 1]
-
   @type rational :: {integer, integer}
 
   @doc """
