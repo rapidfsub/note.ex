@@ -66,13 +66,7 @@ defmodule RationalNumbers do
   def reduce({num, den}) when den < 0, do: reduce({-num, -den})
 
   def reduce({num, den}) do
-    2..min(Kernel.abs(num), Kernel.abs(den))
-    |> Enum.reduce({num, den}, fn divisor, {num, den} ->
-      if rem(num, divisor) == 0 and rem(den, divisor) == 0 do
-        {div(num, divisor), div(den, divisor)}
-      else
-        {num, den}
-      end
-    end)
+    gcd = Integer.gcd(num, den)
+    {div(num, gcd), div(den, gcd)}
   end
 end
