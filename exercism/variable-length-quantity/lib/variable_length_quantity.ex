@@ -1,4 +1,10 @@
 defmodule VariableLengthQuantity do
+  @marker 0b1000_0000
+  @mask 0b0111_1111
+  @mask_size 7
+
+  import Bitwise
+
   @doc """
   Encode integers into a bitstring of VLQ encoded bytes
   """
@@ -9,10 +15,17 @@ defmodule VariableLengthQuantity do
     |> :erlang.list_to_binary()
   end
 
-  defp encode_integer(integer) when integer <= 0xFFFF_FFFF do
-    <<a::4, b::7, c::7, d::7, e::7>> = <<integer::32>>
-    bytes = Enum.drop_while([a, b, c, d], &(&1 == 0)) |> Enum.map(&(&1 + 0x80))
-    :erlang.list_to_binary([bytes, e])
+  defp encode_integer(integer) do
+    tail =
+      Stream.unfold(integer >>> @mask_size, fn
+        n when n > 0 -> {(n &&& @mask) ||| @marker, n >>> @mask_size}
+        _ -> nil
+      end)
+
+    [integer &&& @mask]
+    |> Stream.concat(tail)
+    |> Enum.reverse()
+    |> :erlang.list_to_binary()
   end
 
   @doc """
@@ -22,45 +35,41 @@ defmodule VariableLengthQuantity do
   def decode(bytes) do
     bytes
     |> :erlang.binary_to_list()
-    |> Enum.chunk_while(
-      [],
-      fn byte, chunk ->
-        if byte < 0x80 do
-          {:cont, [byte | chunk], []}
-        else
-          {:cont, [byte | chunk]}
-        end
-      end,
-      fn
-        [] -> {:cont, []}
-        chunk -> {:cont, chunk, []}
-      end
-    )
-    |> Enum.reduce_while([], fn chunk, acc ->
-      case decode_chunk(chunk) do
-        {:ok, decoded} -> {:cont, [decoded | acc]}
-        {:error, _reason} = error -> {:halt, error}
-      end
-    end)
-    |> case do
-      {:error, _reason} = error -> error
-      result -> {:ok, Enum.reverse(result)}
+    |> decode_bytes([])
+  end
+
+  defp decode_bytes([], []) do
+    {:ok, []}
+  end
+
+  defp decode_bytes([], chunk) do
+    with {:ok, result} <- decode_chunk(chunk) do
+      {:ok, [result]}
     end
   end
 
-  defp decode_chunk([byte | _rest] = bytes) when byte < 0x80 do
-    bits =
-      bytes
-      |> Enum.reverse()
-      |> Enum.map(&<<&1::7>>)
-      |> :erlang.list_to_bitstring()
+  defp decode_bytes([byte | bytes], chunk) when byte < @marker do
+    with {:ok, decoded} <- decode_chunk([byte | chunk]),
+         {:ok, result} <- decode_bytes(bytes, []) do
+      {:ok, [decoded | result]}
+    end
+  end
 
-    count = bit_size(bits)
-    <<result::size(count)>> = bits
+  defp decode_bytes([byte | bytes], chunk) do
+    decode_bytes(bytes, [byte | chunk])
+  end
+
+  defp decode_chunk([byte | _bytes] = chunk) when byte < @marker do
+    result =
+      chunk
+      |> Enum.map(&(&1 &&& @mask))
+      |> Enum.reverse()
+      |> Enum.reduce(0, &(&2 <<< @mask_size ||| &1))
+
     {:ok, result}
   end
 
-  defp decode_chunk(_bytes) do
+  defp decode_chunk(_chunk) do
     {:error, "incomplete sequence"}
   end
 end
