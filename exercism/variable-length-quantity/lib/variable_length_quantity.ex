@@ -1,4 +1,6 @@
 defmodule VariableLengthQuantity do
+  import Bitwise
+
   @doc """
   Encode integers into a bitstring of VLQ encoded bytes
   """
@@ -9,10 +11,17 @@ defmodule VariableLengthQuantity do
     |> :erlang.list_to_binary()
   end
 
-  defp encode_integer(integer) when integer <= 0xFFFF_FFFF do
-    <<a::4, b::7, c::7, d::7, e::7>> = <<integer::32>>
-    bytes = Enum.drop_while([a, b, c, d], &(&1 == 0)) |> Enum.map(&(&1 + 0x80))
-    :erlang.list_to_binary([bytes, e])
+  defp encode_integer(integer) do
+    tail =
+      Stream.unfold(integer >>> 7, fn
+        n when n > 0 -> {(n &&& 0x7F) ||| 0x80, n >>> 7}
+        _ -> nil
+      end)
+
+    [integer &&& 0x7F]
+    |> Stream.concat(tail)
+    |> Enum.reverse()
+    |> :erlang.list_to_binary()
   end
 
   @doc """
