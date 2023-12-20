@@ -73,8 +73,13 @@ defmodule Loft.MixProject do
         "tailwind.install --if-missing",
         "esbuild.install --if-missing"
       ],
-      "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.build": ["tailwind default", "esbuild default", "tailwind storybook "],
+      "assets.deploy": [
+        "tailwind default --minify",
+        "esbuild default --minify",
+        "tailwind storybook --minify",
+        "phx.digest"
+      ]
     ]
   end
 end

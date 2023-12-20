@@ -1,4 +1,6 @@
 defmodule LoftWeb.Router do
+  import PhoenixStorybook.Router
+
   use LoftWeb, :router
 
   pipeline :browser do
@@ -10,6 +12,10 @@ defmodule LoftWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  scope "/" do
+    storybook_assets()
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -18,6 +24,7 @@ defmodule LoftWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live_storybook("/storybook", backend_module: LoftWeb.Storybook)
   end
 
   # Other scopes may use custom stacks.
