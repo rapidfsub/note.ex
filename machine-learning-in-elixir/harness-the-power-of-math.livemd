@@ -1,0 +1,84 @@
+# Harness the Power of Math
+
+```elixir
+Mix.install([
+  {:exla, ">= 0.0.0"},
+  {:kino, ">= 0.0.0"},
+  {:kino_vega_lite, ">= 0.0.0"},
+  {:nx, ">= 0.0.0"},
+  {:stb_image, ">= 0.0.0"},
+  {:vega_lite, ">= 0.0.0"}
+])
+```
+
+## Section
+
+```elixir
+Nx.default_backend(EXLA.Backend)
+```
+
+```elixir
+defmodule BerryFarm do
+  import Nx.Defn
+
+  defn profits(trees) do
+    -((trees - 1) ** 4) + trees ** 3 + trees ** 2
+  end
+
+  defn profits_derivative(trees) do
+    grad(trees, &profits/1)
+  end
+end
+```
+
+```elixir
+trees = Nx.linspace(0, 4, n: 100)
+profits = BerryFarm.profits(trees)
+profits_derivative = BerryFarm.profits_derivative(trees)
+```
+
+```elixir
+alias VegaLite, as: Vl
+```
+
+```elixir
+Vl.new(title: "Berry Profits", width: 540, height: 540)
+|> Vl.data_from_values(%{
+  trees: Nx.to_flat_list(trees),
+  profits: Nx.to_flat_list(profits),
+  profits_derivative: Nx.to_flat_list(profits_derivative)
+})
+|> Vl.layers([
+  Vl.new()
+  |> Vl.mark(:line, interpolate: :basis)
+  |> Vl.encode_field(:x, "trees", type: :quantitative)
+  |> Vl.encode_field(:y, "profits", type: :quantitative),
+  Vl.new()
+  |> Vl.mark(:line, interpolate: :basis)
+  |> Vl.encode_field(:x, "trees", type: :quantitative)
+  |> Vl.encode_field(:y, "profits_derivative", type: :quantitative)
+  |> Vl.encode(:color, value: "#ff0000")
+])
+```
+
+```elixir
+defmodule GradFun do
+  import Nx.Defn
+
+  defn my_function(x) do
+    x
+    |> Nx.cos()
+    |> Nx.exp()
+    |> Nx.sum()
+    |> print_expr()
+  end
+
+  defn grad_my_function(x) do
+    grad(x, &my_function/1) |> print_expr()
+  end
+end
+```
+
+```elixir
+GradFun.grad_my_function(Nx.tensor([1.0, 2.0, 3.0]))
+```
