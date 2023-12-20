@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "daisyui": ">= 0.0.0",
+    "tailwindcss": ">= 0.0.0"
+  }
+}
