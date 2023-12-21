@@ -17,5 +17,33 @@ defmodule Change do
 
   @spec generate(list, integer) :: {:ok, list} | {:error, String.t()}
   def generate(coins, target) do
+    coins
+    |> Enum.sort(:desc)
+    |> do_generate(target, [], 0, nil)
+    |> case do
+      {:ok, result, _step} -> {:ok, result}
+      {:error, _reason} = error -> error
+    end
+  end
+
+  defp do_generate([ch | ct] = coins, target, acc, len, lim)
+       when target > 0 and (is_nil(lim) or len < lim) do
+    case do_generate(coins, target - ch, [ch | acc], len + 1, lim) do
+      {:ok, _result, next_lim} = lhs ->
+        with {:error, _reason} <- do_generate(ct, target, acc, len, next_lim) do
+          lhs
+        end
+
+      {:error, _reason} ->
+        do_generate(ct, target, acc, len, lim)
+    end
+  end
+
+  defp do_generate(_coins, 0, acc, len, lim) when is_nil(lim) or len < lim do
+    {:ok, acc, len}
+  end
+
+  defp do_generate(_coins, _target, _acc, _len, _lim) do
+    {:error, "cannot change"}
   end
 end
