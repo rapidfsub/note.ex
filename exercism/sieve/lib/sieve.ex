@@ -4,13 +4,19 @@ defmodule Sieve do
   """
   @spec primes_to(non_neg_integer) :: [non_neg_integer]
   def primes_to(limit) do
-    sieve(2..limit//1)
-  end
+    composites =
+      Enum.reduce(2..limit//1, MapSet.new(), fn x, acc ->
+        if MapSet.member?(acc, x) do
+          acc
+        else
+          Enum.reduce((x * 2)..limit//x, acc, fn y, acc ->
+            MapSet.put(acc, y)
+          end)
+        end
+      end)
 
-  defp sieve(numbers) do
-    case Enum.split(numbers, 1) do
-      {[], []} -> []
-      {[head], tail} -> [head | Enum.filter(tail, &(rem(&1, head) != 0)) |> sieve()]
+    for number <- 2..limit//1, !MapSet.member?(composites, number) do
+      number
     end
   end
 end
