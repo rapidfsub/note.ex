@@ -1,4 +1,11 @@
 defmodule ScaleGenerator do
+  @accidentals ~w[# b]
+  @chromatic_scale_count 13
+  @chromatic_scale_in_flats ~w[A Bb B C Db D Eb E F Gb G Ab]
+  @chromatic_scale_in_sharps ~w[A A# B C C# D D# E F F# G G#]
+  @notes_in_flats_scale ~w[F Bb Eb Ab Db Gb d g c f bb eb]
+  @tones ~w[a b c d e f g A B C D E F G]
+
   @doc """
   Find the note for a given interval (`step`) in a `scale` after the `tonic`.
 
@@ -15,7 +22,17 @@ defmodule ScaleGenerator do
   """
   @spec step(scale :: list(String.t()), tonic :: String.t(), step :: String.t()) :: String.t()
   def step(scale, tonic, step) do
+    cond do
+      tonic in scale ->
+        Stream.cycle(scale)
+        |> Stream.drop_while(&(&1 != tonic))
+        |> Enum.fetch!(offset(step))
+    end
   end
+
+  defp offset("m"), do: 1
+  defp offset("M"), do: 2
+  defp offset("A"), do: 3
 
   @doc """
   The chromatic scale is a musical scale with thirteen pitches, each a semitone
@@ -32,7 +49,25 @@ defmodule ScaleGenerator do
   "C" should generate: ~w(C C# D D# E F F# G G# A A# B C)
   """
   @spec chromatic_scale(tonic :: String.t()) :: list(String.t())
-  def chromatic_scale(tonic \\ "C") do
+  def chromatic_scale(tonic) do
+    case upcase(tonic) do
+      tonic when tonic in @chromatic_scale_in_sharps ->
+        @chromatic_scale_in_sharps
+        |> Stream.cycle()
+        |> Stream.drop_while(&(&1 != tonic))
+        |> Enum.take(@chromatic_scale_count)
+    end
+  end
+
+  defp upcase(tonic) when byte_size(tonic) == 1 and tonic in @tones do
+    String.upcase(tonic)
+  end
+
+  defp upcase(tonic) when byte_size(tonic) == 2 do
+    case String.graphemes(tonic) do
+      [tone, accidental] when tone in @tones and accidental in @accidentals ->
+        String.upcase(tone) <> accidental
+    end
   end
 
   @doc """
@@ -48,7 +83,14 @@ defmodule ScaleGenerator do
   "C" should generate: ~w(C Db D Eb E F Gb G Ab A Bb B C)
   """
   @spec flat_chromatic_scale(tonic :: String.t()) :: list(String.t())
-  def flat_chromatic_scale(tonic \\ "C") do
+  def flat_chromatic_scale(tonic) do
+    case upcase(tonic) do
+      tonic when tonic in @chromatic_scale_in_flats ->
+        @chromatic_scale_in_flats
+        |> Stream.cycle()
+        |> Stream.drop_while(&(&1 != tonic))
+        |> Enum.take(@chromatic_scale_count)
+    end
   end
 
   @doc """
@@ -62,7 +104,12 @@ defmodule ScaleGenerator do
   For all others, use the regular chromatic scale.
   """
   @spec find_chromatic_scale(tonic :: String.t()) :: list(String.t())
+  def find_chromatic_scale(tonic) when tonic in @notes_in_flats_scale do
+    flat_chromatic_scale(tonic)
+  end
+
   def find_chromatic_scale(tonic) do
+    chromatic_scale(tonic)
   end
 
   @doc """
@@ -78,5 +125,16 @@ defmodule ScaleGenerator do
   """
   @spec scale(tonic :: String.t(), pattern :: String.t()) :: list(String.t())
   def scale(tonic, pattern) do
+    pattern = String.graphemes(pattern)
+    find_chromatic_scale(tonic) |> scale(pattern, [upcase(tonic)])
+  end
+
+  defp scale(_scale, [], result) do
+    Enum.reverse(result)
+  end
+
+  defp scale(scale, [step | pattern], [tonic | _] = result) do
+    note = step(scale, tonic, step)
+    scale(scale, pattern, [note | result])
   end
 end
