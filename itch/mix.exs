@@ -65,6 +65,7 @@ defmodule Itch.MixProject do
       # added
       {:ex_cldr, ">= 0.0.0"},
       {:ex_cldr_calendars_lunisolar, ">= 0.0.0"},
+      {:oban, ">= 0.0.0"},
       {:req, ">= 0.0.0"},
       {:time_zone_info, ">= 0.0.0"}
     ]
