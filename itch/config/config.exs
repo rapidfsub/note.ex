@@ -66,6 +66,14 @@ config :elixir, :time_zone_database, TimeZoneInfo.TimeZoneDatabase
 config :time_zone_info, update: :daily
 config :tzdata, :autoupdate, :disabled
 
+config :itch, Oban,
+  repo: Itch.Repo,
+  queues: [default: 10],
+  plugins: [
+    {Oban.Plugins.Pruner, max_age: 60 * 60 * 24 * 7},
+    {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(30)}
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

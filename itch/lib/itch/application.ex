@@ -7,6 +7,8 @@ defmodule Itch.Application do
 
   @impl true
   def start(_type, _args) do
+    # Oban.Telemetry.attach_default_logger()
+
     children = [
       ItchWeb.Telemetry,
       Itch.Repo,
@@ -17,7 +19,8 @@ defmodule Itch.Application do
       # Start a worker by calling: Itch.Worker.start_link(arg)
       # {Itch.Worker, arg},
       # Start to serve requests, typically the last entry
-      ItchWeb.Endpoint
+      ItchWeb.Endpoint,
+      {Oban, Application.fetch_env!(:itch, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
