@@ -23,8 +23,18 @@
     {
       "default": "nil",
       "size": null,
-      "type": "date",
-      "source": "date",
+      "type": "bigint",
+      "source": "month",
+      "references": null,
+      "allow_nil?": false,
+      "primary_key?": false,
+      "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "bigint",
+      "source": "day",
       "references": null,
       "allow_nil?": false,
       "primary_key?": false,
@@ -42,7 +52,7 @@
     }
   ],
   "table": "anniversary",
-  "hash": "882703A2A891C480314A98C66ADC98BEB8E744D76BADA0899BFC10C00368F05B",
+  "hash": "BEC6EC0CD84D51843B27BD8DC1E2C6AF09C5FD1906905E3ACC382D9D34810BB7",
   "repo": "Elixir.Itch.Repo",
   "schema": null,
   "check_constraints": [],
@@ -50,8 +60,8 @@
   "custom_indexes": [],
   "multitenancy": {
     "global": null,
-    "strategy": null,
-    "attribute": null
+    "attribute": null,
+    "strategy": null
   },
   "base_filter": null,
   "custom_statements": [],

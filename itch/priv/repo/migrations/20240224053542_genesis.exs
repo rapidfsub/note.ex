@@ -11,7 +11,8 @@ defmodule Itch.Repo.Migrations.Genesis do
     create table(:anniversary, primary_key: false) do
       add :id, :bigserial, null: false, primary_key: true
       add :name, :citext, null: false
-      add :date, :date, null: false
+      add :month, :bigint, null: false
+      add :day, :bigint, null: false
       add :calendar_kind, :text, null: false
     end
   end
