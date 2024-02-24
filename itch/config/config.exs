@@ -62,6 +62,8 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 ## added
+config :elixir, :time_zone_database, TimeZoneInfo.TimeZoneDatabase
+config :time_zone_info, update: :daily
 config :tzdata, :autoupdate, :disabled
 
 # Import environment specific config. This must remain at the bottom
