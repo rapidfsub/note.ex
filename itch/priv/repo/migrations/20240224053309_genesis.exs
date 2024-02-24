@@ -1,4 +1,4 @@
-defmodule Itch.Repo.Migrations.MigrateResources1 do
+defmodule Itch.Repo.Migrations.Genesis do
   @moduledoc """
   Updates resources based on their most recent snapshots.
 
@@ -9,9 +9,10 @@ defmodule Itch.Repo.Migrations.MigrateResources1 do
 
   def up do
     create table(:anniversary, primary_key: false) do
-      add :id, :uuid, null: false, default: fragment("uuid_generate_v4()"), primary_key: true
+      add :id, :bigserial, null: false, primary_key: true
       add :name, :citext, null: false
       add :date, :date, null: false
+      add :calendar_kind, :text, null: false
     end
   end
 

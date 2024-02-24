@@ -1,14 +1,14 @@
 {
   "attributes": [
     {
-      "default": "fragment(\"uuid_generate_v4()\")",
+      "default": "nil",
       "size": null,
-      "type": "uuid",
+      "type": "bigint",
       "source": "id",
       "references": null,
       "allow_nil?": false,
       "primary_key?": true,
-      "generated?": false
+      "generated?": true
     },
     {
       "default": "nil",
@@ -29,10 +29,20 @@
       "allow_nil?": false,
       "primary_key?": false,
       "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "text",
+      "source": "calendar_kind",
+      "references": null,
+      "allow_nil?": false,
+      "primary_key?": false,
+      "generated?": false
     }
   ],
   "table": "anniversary",
-  "hash": "073DA6F3C42F249DD3158D4863BBDE4BE89B6CB36273E2273C8D0B97593006C7",
+  "hash": "882703A2A891C480314A98C66ADC98BEB8E744D76BADA0899BFC10C00368F05B",
   "repo": "Elixir.Itch.Repo",
   "schema": null,
   "check_constraints": [],
@@ -40,8 +50,8 @@
   "custom_indexes": [],
   "multitenancy": {
     "global": null,
-    "attribute": null,
-    "strategy": null
+    "strategy": null,
+    "attribute": null
   },
   "base_filter": null,
   "custom_statements": [],
