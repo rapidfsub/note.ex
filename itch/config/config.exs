@@ -63,6 +63,7 @@ config :phoenix, :json_library, Jason
 
 ## added
 config :elixir, :time_zone_database, TimeZoneInfo.TimeZoneDatabase
+config :itch, :ash_apis, [Itch.Api]
 config :time_zone_info, update: :daily
 config :tzdata, :autoupdate, :disabled
 

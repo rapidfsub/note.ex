@@ -58,6 +58,10 @@ defmodule Itch.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
+      # ash deps
+      {:ash, ">= 0.0.0"},
+      {:ash_postgres, ">= 0.0.0"},
+      {:ash_phoenix, ">= 0.0.0"},
       # astro deps
       {:astro, ">= 0.0.0"},
       {:hackney, ">= 0.0.0"},
