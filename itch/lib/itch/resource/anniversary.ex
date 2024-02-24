@@ -11,5 +11,6 @@ defmodule Itch.Resource.Anniversary do
     integer_primary_key :id
     attribute :name, :ci_string, allow_nil?: false
     attribute :date, :date, allow_nil?: false
+    attribute :calendar_kind, Itch.Enum.CalendarKind, allow_nil?: false
   end
 end
