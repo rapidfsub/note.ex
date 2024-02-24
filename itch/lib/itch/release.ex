@@ -12,7 +12,7 @@ defmodule Itch.Release do
       {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :up, all: true))
     end
 
-    Mix.Task.run("ecto.seeds")
+    Mix.Task.run("ecto.reset")
   end
 
   def rollback(repo, version) do
