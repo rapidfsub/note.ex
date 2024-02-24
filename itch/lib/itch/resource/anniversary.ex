@@ -14,4 +14,17 @@ defmodule Itch.Resource.Anniversary do
     attribute :day, :integer, allow_nil?: false
     attribute :calendar_kind, Itch.Enum.CalendarKind, allow_nil?: false
   end
+
+  identities do
+    identity :unique_name, :name
+  end
+
+  actions do
+    defaults [:create]
+
+    create :upsert do
+      upsert? true
+      upsert_identity :unique_name
+    end
+  end
 end

@@ -15,9 +15,13 @@ defmodule Itch.Repo.Migrations.Genesis do
       add :day, :bigint, null: false
       add :calendar_kind, :text, null: false
     end
+
+    create unique_index(:anniversary, [:name], name: "anniversary_unique_name_index")
   end
 
   def down do
+    drop_if_exists unique_index(:anniversary, [:name], name: "anniversary_unique_name_index")
+
     drop table(:anniversary)
   end
 end
