@@ -12,7 +12,17 @@ defmodule Itch.Release do
       {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :up, all: true))
     end
 
+    start_repo()
     Itch.Seeds.run()
+  end
+
+  def start_repo do
+    unless Process.whereis(Itch.Repo) do
+      Supervisor.start_link([Itch.Repo],
+        strategy: :one_for_one,
+        name: Itch.Release.Supervisor
+      )
+    end
   end
 
   def rollback(repo, version) do
