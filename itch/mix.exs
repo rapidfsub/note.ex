@@ -58,8 +58,14 @@ defmodule Itch.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
+      # astro deps
+      {:astro, ">= 0.0.0"},
+      {:hackney, ">= 0.0.0"},
+      {:tzdata, ">= 0.0.0"},
       # added
-      {:req, ">= 0.0.0"},
+      {:ex_cldr, ">= 0.0.0"},
+      {:ex_cldr_calendars_lunisolar, ">= 0.0.0"},
+      {:req, ">= 0.0.0"}
     ]
   end
 
