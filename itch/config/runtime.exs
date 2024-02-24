@@ -115,3 +115,5 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end
+
+config :itch, :slack_webhook, System.fetch_env!("SLACK_WEBHOOK")
