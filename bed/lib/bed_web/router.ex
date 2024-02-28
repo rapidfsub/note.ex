@@ -1,4 +1,5 @@
 defmodule BedWeb.Router do
+  use AshAuthentication.Phoenix.Router
   use BedWeb, :router
 
   pipeline :browser do
@@ -8,16 +9,29 @@ defmodule BedWeb.Router do
     plug :put_root_layout, html: {BedWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    ### added
+    plug :load_from_session
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+    ### added
+    plug :load_from_bearer
   end
 
   scope "/", BedWeb do
     pipe_through :browser
 
     get "/", PageController, :home
+  end
+
+  scope "/", BedWeb do
+    pipe_through :browser
+
+    sign_in_route(register_path: "/register", reset_path: "/reset")
+    sign_out_route AuthController
+    auth_routes_for Bed.Model.Identity, to: AuthController
+    reset_route []
   end
 
   # Other scopes may use custom stacks.

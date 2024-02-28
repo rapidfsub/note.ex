@@ -3,5 +3,6 @@ defmodule Bed.Model do
 
   resources do
     resource Bed.Model.Identity
+    resource Bed.Model.Token
   end
 end
