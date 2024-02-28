@@ -25,6 +25,10 @@ defmodule Bed.Model.Identity do
       password :password do
         identity_field :email
         sign_in_tokens_enabled? true
+
+        resettable do
+          sender Bed.Auth.SendPasswordResetEmail
+        end
       end
     end
 
