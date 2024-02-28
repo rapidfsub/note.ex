@@ -32,6 +32,11 @@ defmodule Bed.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # ash deps
+      {:ash, ">= 0.0.0"},
+      {:ash_phoenix, ">= 0.0.0"},
+      {:ash_postgres, ">= 0.0.0"},
+      # phoenix deps
       {:phoenix, ">= 0.0.0"},
       {:phoenix_ecto, ">= 0.0.0"},
       {:ecto_sql, ">= 0.0.0"},
