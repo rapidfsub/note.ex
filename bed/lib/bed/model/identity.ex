@@ -3,7 +3,8 @@ defmodule Bed.Model.Identity do
     data_layer: AshPostgres.DataLayer,
     extensions: [AshAuthentication]
 
-  use Bed.Model.Template
+  use Bed.Prelude
+  use M.Template
 
   postgres do
     table "identity"
@@ -34,7 +35,7 @@ defmodule Bed.Model.Identity do
 
     tokens do
       enabled? true
-      token_resource Bed.Model.Token
+      token_resource M.Token
       signing_secret Bed.Auth.Secrets
     end
   end

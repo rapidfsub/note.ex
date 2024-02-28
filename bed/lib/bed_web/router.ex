@@ -1,5 +1,6 @@
 defmodule BedWeb.Router do
   use AshAuthentication.Phoenix.Router
+  use Bed.Prelude
   use BedWeb, :router
 
   pipeline :browser do
@@ -34,7 +35,7 @@ defmodule BedWeb.Router do
 
     sign_in_route(register_path: "/register", reset_path: "/reset")
     sign_out_route AuthController
-    auth_routes_for Bed.Model.Identity, to: AuthController
+    auth_routes_for M.Identity, to: AuthController
     reset_route []
   end
 

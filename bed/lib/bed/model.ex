@@ -1,8 +1,9 @@
 defmodule Bed.Model do
   use Ash.Api
+  use Bed.Prelude
 
   resources do
-    resource Bed.Model.Identity
-    resource Bed.Model.Token
+    resource M.Identity
+    resource M.Token
   end
 end
