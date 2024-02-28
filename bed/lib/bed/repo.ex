@@ -1,5 +1,9 @@
 defmodule Bed.Repo do
-  use Ecto.Repo,
-    otp_app: :bed,
-    adapter: Ecto.Adapters.Postgres
+  use AshPostgres.Repo,
+    otp_app: :bed
+
+  # Installs Postgres extensions that ash commonly uses
+  def installed_extensions do
+    ~w[citext uuid-ossp]
+  end
 end
