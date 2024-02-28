@@ -9,18 +9,22 @@ defmodule BedWeb.Router do
     plug :put_root_layout, html: {BedWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    ### added
-    plug :load_from_session
   end
 
   pipeline :api do
     plug :accepts, ["json"]
-    ### added
+  end
+
+  pipeline :session_users do
+    plug :load_from_session
+  end
+
+  pipeline :bearer_users do
     plug :load_from_bearer
   end
 
   scope "/", BedWeb do
-    pipe_through :browser
+    pipe_through [:browser, :session_users]
 
     get "/", PageController, :home
   end
@@ -36,7 +40,7 @@ defmodule BedWeb.Router do
 
   # Other scopes may use custom stacks.
   # scope "/api", BedWeb do
-  #   pipe_through :api
+  #   pipe_through [:api, :bearer_users]
   # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

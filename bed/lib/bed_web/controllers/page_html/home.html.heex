@@ -12,9 +12,9 @@
         </div>
       </div>
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        <%= if assigns[:current_user] do %>
+        <%= if @current_identity do %>
           <span class="px-3 py-2 text-sm font-medium text-white rounded-md">
-            <%= @current_user.email %>
+            <%= @current_identity.email %>
           </span>
           <a
             href="/sign-out"
