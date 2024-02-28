@@ -17,7 +17,8 @@ defmodule Bed.Application do
       # Start a worker by calling: Bed.Worker.start_link(arg)
       # {Bed.Worker, arg},
       # Start to serve requests, typically the last entry
-      BedWeb.Endpoint
+      BedWeb.Endpoint,
+      {AshAuthentication.Supervisor, otp_app: :bed}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
