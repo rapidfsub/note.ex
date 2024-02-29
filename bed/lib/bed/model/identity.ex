@@ -1,7 +1,10 @@
 defmodule Bed.Model.Identity do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshAuthentication]
+    extensions: [
+      AshAuthentication,
+      Bed.Extension.Factory
+    ]
 
   use Bed.Prelude
   use M.Template
@@ -41,6 +44,13 @@ defmodule Bed.Model.Identity do
       enabled? true
       token_resource M.Token
       signing_secret Bed.Auth.Secrets
+    end
+  end
+
+  factories do
+    factory :fac do
+      attr :email, &Faker.Lorem.word/0
+      attr :hashed_password, &Faker.Lorem.word/0
     end
   end
 end

@@ -3,9 +3,6 @@ defmodule Bed.Model.Account do
     data_layer: AshPostgres.DataLayer,
     extensions: [Bed.Extension.Factory]
 
-  # use Ash.Resource,
-  #   data_layer: AshPostgres.DataLayer
-
   use Bed.Prelude
   use M.Template
 
@@ -34,7 +31,7 @@ defmodule Bed.Model.Account do
   end
 
   factories do
-    factory :account do
+    factory :fac do
       attr :nickname, &Faker.Lorem.word/0
       attr :balance, fn -> Enum.random(0..100) end
     end
