@@ -1,39 +1,48 @@
 defmodule Bed.Extension.Factory do
-  @sections [
-    %Spark.Dsl.Section{
-      name: :factories,
-      entities: [
-        %Spark.Dsl.Entity{
-          name: :factory,
-          args: [:name],
-          target: Bed.Extension.Factory.Action,
-          schema: [
-            name: [
-              type: :atom,
-              required: true
-            ]
-          ],
-          entities: [
-            attrs: [
-              %Spark.Dsl.Entity{
-                name: :attr,
-                args: [:name, :fun],
-                target: Bed.Extension.Factory.Attr,
-                schema: [
-                  name: [
-                    type: :atom,
-                    required: true
-                  ],
-                  fun: [
-                    type: {:fun, 0},
-                    required: true
-                  ]
-                ]
-              }
-            ]
-          ]
-        }
+  use Bed.Prelude.Ash
+
+  defmodule RecordFactory do
+    defstruct [:name, :attrs]
+  end
+
+  defmodule FieldFactory do
+    defstruct [:name, :fun]
+  end
+
+  @field_factory %Entity{
+    name: :attr,
+    args: [:name, :fun],
+    target: FieldFactory,
+    schema: [
+      name: [
+        type: :atom,
+        required: true
+      ],
+      fun: [
+        type: {:fun, 0},
+        required: true
       ]
+    ]
+  }
+
+  @record_factory %Entity{
+    name: :factory,
+    args: [:name],
+    target: RecordFactory,
+    schema: [
+      name: [
+        type: :atom,
+        required: true
+      ]
+    ],
+    entities: [
+      attrs: [@field_factory]
+    ]
+  }
+  @sections [
+    %Section{
+      name: :factories,
+      entities: [@record_factory]
     }
   ]
 

@@ -1,6 +1,5 @@
 defmodule Bed.Extension.Factory.Transformer do
-  alias Ash.Resource.Builder, as: RB
-  alias Spark.Dsl.Transformer
+  use Bed.Prelude.Ash
   use Spark.Dsl.Transformer
 
   @impl Spark.Dsl.Transformer
