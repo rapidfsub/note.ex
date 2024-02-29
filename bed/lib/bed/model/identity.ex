@@ -19,6 +19,10 @@ defmodule Bed.Model.Identity do
     identity :unique_email, [:email]
   end
 
+  relationships do
+    has_many :accounts, M.Account
+  end
+
   authentication do
     api Bed.Model
 
