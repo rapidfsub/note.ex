@@ -4,11 +4,20 @@ defmodule Bed.Extension.FactoryFlow.Transformer do
   use Transformer
 
   defmodule PrepareInput do
-    def build_custom(dsl_state) do
+    def build_custom(dsl_state, resource, action) do
       attrs =
         dsl_state
         |> Transformer.get_entities([:factory, :attrs])
         |> Enum.map(&{&1.name, &1.fun})
+
+      action = resource |> Resource.Info.action(action)
+      attributes = action.accept |> Enum.map(&Resource.Info.attribute(resource, &1))
+
+      attrs =
+        (attributes ++ action.arguments)
+        |> Enum.reduce(attrs, fn a, attrs ->
+          Keyword.put_new(attrs, a.name, Bed.Extension.FieldFactory.fun(a.type))
+        end)
 
       Transformer.build_entity(
         Flow.Dsl,
@@ -30,21 +39,24 @@ defmodule Bed.Extension.FactoryFlow.Transformer do
 
   @impl Transformer
   def transform(dsl_state) do
-    factory_api = dsl_state |> Transformer.get_option([:factory], :api)
+    api = dsl_state |> Transformer.get_option([:factory], :api)
 
     case dsl_state |> Transformer.get_option([:flow], :api) do
-      ^factory_api ->
+      ^api ->
         {:ok, dsl_state}
 
       _ ->
+        resource = dsl_state |> Transformer.get_option([:factory], :resource)
+        action = dsl_state |> Transformer.get_option([:factory], :action)
+
         dsl_state =
           dsl_state
-          |> Transformer.set_option([:flow], :api, factory_api)
+          |> Transformer.set_option([:flow], :api, api)
           |> Transformer.set_option([:flow], :returns, :factory)
 
         [
-          PrepareInput.build_custom(dsl_state),
-          build_create(dsl_state)
+          PrepareInput.build_custom(dsl_state, resource, action),
+          build_create(resource, action)
         ]
         |> Enum.reduce({:ok, dsl_state}, fn {:ok, step}, {:ok, dsl_state} ->
           {:ok, dsl_state |> Transformer.add_entity([:steps], step)}
@@ -52,17 +64,14 @@ defmodule Bed.Extension.FactoryFlow.Transformer do
     end
   end
 
-  defp build_create(dsl_state) do
-    factory_action = dsl_state |> Transformer.get_option([:factory], :action)
-    factory_resource = dsl_state |> Transformer.get_option([:factory], :resource)
-
+  defp build_create(resource, action) do
     Transformer.build_entity(
       Flow.Dsl,
       [:steps],
       :create,
       name: :factory,
-      resource: factory_resource,
-      action: factory_action,
+      resource: resource,
+      action: action,
       input: StepHelpers.result(:prepare)
     )
   end

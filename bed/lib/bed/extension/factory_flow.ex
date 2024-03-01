@@ -1,10 +1,6 @@
 defmodule Bed.Extension.FactoryFlow do
   use Bed.Prelude.Ash
 
-  defmodule FieldFactory do
-    defstruct [:name, :fun]
-  end
-
   @section %Section{
     name: :factory,
     schema: [
@@ -27,7 +23,7 @@ defmodule Bed.Extension.FactoryFlow do
         entities: [
           %Entity{
             name: :attr,
-            target: FieldFactory,
+            target: Bed.Extension.FieldFactory,
             args: [:name, :fun],
             schema: [
               name: [
