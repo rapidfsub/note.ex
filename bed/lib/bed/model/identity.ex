@@ -46,11 +46,4 @@ defmodule Bed.Model.Identity do
       signing_secret Bed.Auth.Secrets
     end
   end
-
-  factories do
-    factory :fac do
-      attr :email, &Faker.Lorem.word/0
-      attr :hashed_password, &Faker.Lorem.word/0
-    end
-  end
 end

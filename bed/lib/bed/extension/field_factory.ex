@@ -10,6 +10,10 @@ defmodule Bed.Extension.FieldFactory do
   end
 
   def fun(Ash.Type.Decimal) do
-    fn -> Enum.random(1..100) end
+    &__MODULE__.decimal_fun/0
+  end
+
+  def decimal_fun() do
+    Enum.random(1..100)
   end
 end
