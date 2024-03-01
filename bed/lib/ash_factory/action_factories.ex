@@ -1,14 +1,11 @@
-defmodule Bed.Extension.Factory do
-  use Bed.Prelude.Ash
-
-  defmodule RecordFactory do
-    defstruct [:name, :attrs]
-  end
+defmodule AshFactory.ActionFactories do
+  use AshFactory.Prelude
+  use Prelude.Ash
 
   @field_factory %Entity{
     name: :attr,
     args: [:name, :fun],
-    target: Bed.Extension.FieldFactory,
+    target: T.FieldFactory,
     schema: [
       name: [
         type: :atom,
@@ -24,7 +21,7 @@ defmodule Bed.Extension.Factory do
   @record_factory %Entity{
     name: :factory,
     args: [:name],
-    target: RecordFactory,
+    target: T.ActionFactory,
     schema: [
       name: [
         type: :atom,
@@ -35,6 +32,7 @@ defmodule Bed.Extension.Factory do
       attrs: [@field_factory]
     ]
   }
+
   @sections [
     %Section{
       name: :factories,
@@ -44,5 +42,5 @@ defmodule Bed.Extension.Factory do
 
   use Spark.Dsl.Extension,
     sections: @sections,
-    transformers: [Bed.Extension.Factory.Transformer]
+    transformers: [__MODULE__.Transformer]
 end

@@ -1,4 +1,4 @@
-defmodule Bed.Extension.FieldFactory do
+defmodule AshFactory.Target.FieldFactory do
   defstruct [:name, :fun]
 
   def fun(Ash.Type.String) do

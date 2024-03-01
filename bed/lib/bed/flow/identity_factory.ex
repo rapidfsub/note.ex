@@ -1,6 +1,6 @@
 defmodule Bed.Flow.IdentityFactory do
   use Ash.Flow,
-    extensions: [Bed.Extension.FactoryFlow]
+    extensions: [AshFactory.FlowFactory]
 
   use Bed.Prelude
 
