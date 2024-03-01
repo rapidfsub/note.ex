@@ -1,5 +1,4 @@
 defmodule Bed.Extension.FactoryFlow.Transformer do
-  use Bed.Prelude
   use Bed.Prelude.Ash
   use Transformer
 

@@ -17,8 +17,6 @@ defmodule Bed.Extension.Factory.Transformer do
           Keyword.put_new(attrs, a.name, Bed.Extension.FieldFactory.fun(a.type))
         end)
 
-      # raise inspect(attrs)
-
       changes =
         attrs
         |> Enum.map(fn {name, fun} ->
