@@ -5,14 +5,10 @@ defmodule Bed.Extension.Factory do
     defstruct [:name, :attrs]
   end
 
-  defmodule FieldFactory do
-    defstruct [:name, :fun]
-  end
-
   @field_factory %Entity{
     name: :attr,
     args: [:name, :fun],
-    target: FieldFactory,
+    target: Bed.Extension.FieldFactory,
     schema: [
       name: [
         type: :atom,

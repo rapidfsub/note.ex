@@ -31,9 +31,7 @@ defmodule Bed.Model.Account do
   end
 
   factories do
-    factory :fac do
-      attr :nickname, &Faker.Lorem.word/0
-      attr :balance, fn -> Enum.random(0..100) end
+    factory :gen do
     end
   end
 end
