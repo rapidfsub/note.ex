@@ -1,4 +1,4 @@
-defmodule AshFactory.FactoryFlow do
+defmodule AshFactory.FlowFactory do
   use AshFactory.Prelude
   use Prelude.Ash
 
@@ -44,5 +44,5 @@ defmodule AshFactory.FactoryFlow do
 
   use Extension,
     sections: [@section],
-    transformers: [AshFactory.FactoryFlow.Transformer]
+    transformers: [__MODULE__.Transformer]
 end

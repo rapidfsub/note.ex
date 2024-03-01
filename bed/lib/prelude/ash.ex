@@ -4,7 +4,7 @@ defmodule Prelude.Ash do
       alias Ash.{Api, Flow, Resource}
       alias Ash.Resource.Builder, as: RB
       alias Ash.Flow.StepHelpers
-      alias Spark.Dsl.{Entity, Extension, Section, Transformer}
+      alias Spark.Dsl.{Entity, Extension, Section, Transformer, Verifier}
     end
   end
 end

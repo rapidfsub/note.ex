@@ -1,4 +1,4 @@
-defmodule AshFactory.FactoryFlow.Transformer do
+defmodule AshFactory.FlowFactory.Transformer do
   use AshFactory.Prelude
   use Prelude.Ash
   use Transformer
@@ -34,10 +34,6 @@ defmodule AshFactory.FactoryFlow.Transformer do
   end
 
   @impl Transformer
-  def before?(Flow.Transformers.SetApi), do: true
-  def before?(_), do: false
-
-  @impl Transformer
   def transform(dsl_state) do
     api = dsl_state |> Transformer.get_option([:factory], :api)
 
@@ -48,15 +44,11 @@ defmodule AshFactory.FactoryFlow.Transformer do
       _ ->
         resource = dsl_state |> Transformer.get_option([:factory], :resource)
         action = dsl_state |> Transformer.get_option([:factory], :action)
-
-        dsl_state =
-          dsl_state
-          |> Transformer.set_option([:flow], :api, api)
-          |> Transformer.set_option([:flow], :returns, :factory)
+        dsl_state = dsl_state |> Transformer.set_option([:flow], :returns, :factory)
 
         [
           PrepareInput.build_custom(dsl_state, resource, action),
-          build_create(resource, action)
+          build_create(api, resource, action)
         ]
         |> Enum.reduce({:ok, dsl_state}, fn {:ok, step}, {:ok, dsl_state} ->
           {:ok, dsl_state |> Transformer.add_entity([:steps], step)}
@@ -64,12 +56,13 @@ defmodule AshFactory.FactoryFlow.Transformer do
     end
   end
 
-  defp build_create(resource, action) do
+  defp build_create(api, resource, action) do
     Transformer.build_entity(
       Flow.Dsl,
       [:steps],
       :create,
       name: :factory,
+      api: api,
       resource: resource,
       action: action,
       input: StepHelpers.result(:prepare)

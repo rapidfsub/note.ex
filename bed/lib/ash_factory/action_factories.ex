@@ -1,4 +1,4 @@
-defmodule AshFactory.Factory do
+defmodule AshFactory.ActionFactories do
   use AshFactory.Prelude
   use Prelude.Ash
 
@@ -32,6 +32,7 @@ defmodule AshFactory.Factory do
       attrs: [@field_factory]
     ]
   }
+
   @sections [
     %Section{
       name: :factories,
@@ -41,5 +42,5 @@ defmodule AshFactory.Factory do
 
   use Spark.Dsl.Extension,
     sections: @sections,
-    transformers: [AshFactory.Factory.Transformer]
+    transformers: [__MODULE__.Transformer]
 end

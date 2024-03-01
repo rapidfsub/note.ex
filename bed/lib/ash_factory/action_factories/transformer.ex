@@ -1,4 +1,4 @@
-defmodule AshFactory.Factory.Transformer do
+defmodule AshFactory.ActionFactories.Transformer do
   use AshFactory.Prelude
   use Prelude.Ash
   use Transformer
