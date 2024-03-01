@@ -1,15 +1,16 @@
-defmodule Bed.Extension.FactoryFlow do
-  use Bed.Prelude.Ash
+defmodule AshFactory.FactoryFlow do
+  use AshFactory.Prelude
+  use Prelude.Ash
 
   @section %Section{
     name: :factory,
     schema: [
       api: [
-        type: {:behaviour, Ash.Api},
+        type: {:behaviour, Api},
         required: true
       ],
       resource: [
-        type: {:behaviour, Ash.Resource},
+        type: {:behaviour, Resource},
         required: true
       ],
       action: [
@@ -23,7 +24,7 @@ defmodule Bed.Extension.FactoryFlow do
         entities: [
           %Entity{
             name: :attr,
-            target: Bed.Extension.FieldFactory,
+            target: T.FieldFactory,
             args: [:name, :fun],
             schema: [
               name: [
@@ -43,5 +44,5 @@ defmodule Bed.Extension.FactoryFlow do
 
   use Extension,
     sections: [@section],
-    transformers: [Bed.Extension.FactoryFlow.Transformer]
+    transformers: [AshFactory.FactoryFlow.Transformer]
 end

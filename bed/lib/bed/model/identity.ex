@@ -1,10 +1,7 @@
 defmodule Bed.Model.Identity do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
-    extensions: [
-      AshAuthentication,
-      Bed.Extension.Factory
-    ]
+    extensions: [AshAuthentication]
 
   use Bed.Prelude
   use M.Template

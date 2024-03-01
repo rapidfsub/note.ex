@@ -1,7 +1,7 @@
 defmodule Bed.Model.Account do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
-    extensions: [Bed.Extension.Factory]
+    extensions: [AshFactory.Factory]
 
   use Bed.Prelude
   use M.Template

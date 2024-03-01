@@ -1,5 +1,6 @@
-defmodule Bed.Extension.Factory.Transformer do
-  use Bed.Prelude.Ash
+defmodule AshFactory.Factory.Transformer do
+  use AshFactory.Prelude
+  use Prelude.Ash
   use Transformer
 
   @impl Transformer
@@ -14,13 +15,13 @@ defmodule Bed.Extension.Factory.Transformer do
         |> Transformer.get_entities([:attributes])
         |> Enum.filter(& &1.writable?)
         |> Enum.reduce(attrs, fn a, attrs ->
-          Keyword.put_new(attrs, a.name, Bed.Extension.FieldFactory.fun(a.type))
+          Keyword.put_new(attrs, a.name, T.FieldFactory.fun(a.type))
         end)
 
       changes =
         attrs
         |> Enum.map(fn {name, fun} ->
-          RB.build_change({Ash.Resource.Change.SetAttribute, attribute: name, value: fun})
+          RB.build_change({Resource.Change.SetAttribute, attribute: name, value: fun})
         end)
 
       dsl_state

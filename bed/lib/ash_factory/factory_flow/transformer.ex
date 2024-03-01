@@ -1,5 +1,6 @@
-defmodule Bed.Extension.FactoryFlow.Transformer do
-  use Bed.Prelude.Ash
+defmodule AshFactory.FactoryFlow.Transformer do
+  use AshFactory.Prelude
+  use Prelude.Ash
   use Transformer
 
   defmodule PrepareInput do
@@ -15,7 +16,7 @@ defmodule Bed.Extension.FactoryFlow.Transformer do
       attrs =
         (attributes ++ action.arguments)
         |> Enum.reduce(attrs, fn a, attrs ->
-          Keyword.put_new(attrs, a.name, Bed.Extension.FieldFactory.fun(a.type))
+          Keyword.put_new(attrs, a.name, T.FieldFactory.fun(a.type))
         end)
 
       Transformer.build_entity(
@@ -33,7 +34,7 @@ defmodule Bed.Extension.FactoryFlow.Transformer do
   end
 
   @impl Transformer
-  def before?(Ash.Flow.Transformers.SetApi), do: true
+  def before?(Flow.Transformers.SetApi), do: true
   def before?(_), do: false
 
   @impl Transformer
