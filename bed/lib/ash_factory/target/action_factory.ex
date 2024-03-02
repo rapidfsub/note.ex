@@ -1,3 +1,3 @@
-defmodule AshFactory.Target.ActionFactory do
-  defstruct [:name, :attrs]
-end
+# defmodule AshFactory.Target.ActionFactory do
+#   defstruct [:name, :attrs]
+# end

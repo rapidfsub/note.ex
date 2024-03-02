@@ -1,7 +1,6 @@
 defmodule Bed.Model.Account do
   use Ash.Resource,
-    data_layer: AshPostgres.DataLayer,
-    extensions: [AshFactory.ActionFactories]
+    data_layer: AshPostgres.DataLayer
 
   use Bed.Prelude
   use M.Template
@@ -28,10 +27,5 @@ defmodule Bed.Model.Account do
 
   code_interface do
     define :open
-  end
-
-  factories do
-    factory :gen do
-    end
   end
 end
