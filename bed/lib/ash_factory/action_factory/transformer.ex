@@ -1,5 +1,6 @@
 defmodule AshFactory.ActionFactory.Transformer do
   use Prelude.Ash
+  use AshFactory.Prelude
   use Transformer
 
   @impl Transformer
@@ -30,16 +31,17 @@ defmodule AshFactory.ActionFactory.Transformer do
   end
 
   defbuilderp add_factory(dsl_state, factory, attributes, relationships) do
-    arguments = build_arguments(relationships)
-    changes = build_changes(factory, attributes, relationships)
+    with {:ok, changes} <- build_changes(factory, attributes, relationships) do
+      arguments = build_arguments(relationships)
 
-    dsl_state
-    |> RB.add_new_action(:create, factory.name,
-      accept: [],
-      arguments: arguments,
-      changes: changes
-    )
-    |> RB.add_new_interface(factory.name)
+      dsl_state
+      |> RB.add_new_action(:create, factory.name,
+        accept: [],
+        arguments: arguments,
+        changes: changes
+      )
+      |> RB.add_new_interface(factory.name)
+    end
   end
 
   defp build_arguments(relationships) do
@@ -53,7 +55,7 @@ defmodule AshFactory.ActionFactory.Transformer do
   defp build_changes(factory, attributes, relationships) do
     (factory.attributes ++ attributes ++ relationships)
     |> Enum.uniq_by(& &1.name)
-    |> Enum.map(&build_change/1)
+    |> EnumHelper.sequence(&build_change/1)
   end
 
   defp build_change(%Resource.Attribute{name: name, type: type}) do
@@ -62,15 +64,27 @@ defmodule AshFactory.ActionFactory.Transformer do
   end
 
   defp build_change(%{name: name, fun: fun}) do
-    {Change.SetAttribute, attribute: name, value: fun}
-    |> RB.build_change()
+    result =
+      {Change.SetAttribute, attribute: name, value: fun}
+      |> RB.build_change()
+
+    {:ok, result}
   end
 
   defp build_change(%Resource.Relationships.BelongsTo{name: name, destination: destination}) do
-    factory = destination.entities([:factories]) |> hd()
+    destination.entities([:factories])
+    |> Enum.find(& &1.primary?)
+    |> case do
+      nil ->
+        {:error, {"No primary factory found for relationship", destination: destination}}
 
-    {Change.ManageRelationship,
-     relationship: name, argument: name, opts: [on_no_match: {:create, factory.name}]}
-    |> RB.build_change()
+      factory ->
+        result =
+          {Change.ManageRelationship,
+           relationship: name, argument: name, opts: [on_no_match: {:create, factory.name}]}
+          |> RB.build_change()
+
+        {:ok, result}
+    end
   end
 end
