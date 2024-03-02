@@ -7,8 +7,8 @@
       "source": "updated_at",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "fragment(\"now()\")",
@@ -17,8 +17,8 @@
       "source": "created_at",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -27,8 +27,8 @@
       "source": "extra_data",
       "references": null,
       "allow_nil?": true,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -37,8 +37,8 @@
       "source": "purpose",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -47,8 +47,8 @@
       "source": "expires_at",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -57,8 +57,8 @@
       "source": "subject",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": false
+      "primary_key?": false,
+      "generated?": false
     },
     {
       "default": "nil",
@@ -67,23 +67,23 @@
       "source": "jti",
       "references": null,
       "allow_nil?": false,
-      "generated?": false,
-      "primary_key?": true
+      "primary_key?": true,
+      "generated?": false
     }
   ],
   "table": "tokens",
-  "hash": "ACAEB504C243621B94D7B5C83EE559EAA6BB9702088D204D4903C6070E6306A5",
+  "hash": "36D27369DAC332ED6545A6F6EEBF7F989EB4A5E8893E88D260AD7493D116A6F0",
   "repo": "Elixir.Bed.Repo",
-  "identities": [],
   "schema": null,
+  "check_constraints": [],
+  "identities": [],
+  "custom_indexes": [],
   "multitenancy": {
     "global": null,
     "strategy": null,
     "attribute": null
   },
   "base_filter": null,
-  "check_constraints": [],
-  "custom_indexes": [],
   "custom_statements": [],
   "has_create_action": true
 }
