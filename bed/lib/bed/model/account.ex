@@ -1,4 +1,4 @@
-defmodule Bed.Model.Account do
+defmodule Bed.Model.BankAccount do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer
 
@@ -6,7 +6,7 @@ defmodule Bed.Model.Account do
   use M.Template
 
   postgres do
-    table "account"
+    table "bank_account"
   end
 
   attributes do
@@ -16,6 +16,7 @@ defmodule Bed.Model.Account do
 
   relationships do
     belongs_to :identity, M.Identity
+    has_many :bank_txns, M.BankTxn
   end
 
   actions do
