@@ -16,5 +16,6 @@ defmodule AshFactory.ActionFactory do
 
   use Extension,
     sections: [@factories],
-    transformers: [AshFactory.ActionFactory.Transformer]
+    transformers: [AshFactory.ActionFactory.Transformer],
+    verifiers: [AshFactory.ActionFactory.Verifiers.NoPrimaryDuplicates]
 end
