@@ -1,6 +1,7 @@
 defmodule Bed.Model.BankAccount do
   use Ash.Resource,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshFactory.ActionFactory]
 
   use Bed.Prelude
   use M.Template
@@ -15,7 +16,7 @@ defmodule Bed.Model.BankAccount do
   end
 
   relationships do
-    belongs_to :identity, M.Identity
+    belongs_to :identity, M.Identity, writable?: false
     has_many :bank_txns, M.BankTxn
   end
 
