@@ -2,22 +2,6 @@ defmodule AshFactory.ActionFactories do
   use AshFactory.Prelude
   use Prelude.Ash
 
-  @field_factory %Entity{
-    name: :attr,
-    args: [:name, :fun],
-    target: T.FieldFactory,
-    schema: [
-      name: [
-        type: :atom,
-        required: true
-      ],
-      fun: [
-        type: {:fun, 0},
-        required: true
-      ]
-    ]
-  }
-
   @record_factory %Entity{
     name: :factory,
     args: [:name],
@@ -29,7 +13,9 @@ defmodule AshFactory.ActionFactories do
       ]
     ],
     entities: [
-      attrs: [@field_factory]
+      attrs: [
+        T.FieldFactory.entity()
+      ]
     ]
   }
 

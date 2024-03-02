@@ -22,21 +22,7 @@ defmodule AshFactory.FlowFactory do
       %Section{
         name: :attrs,
         entities: [
-          %Entity{
-            name: :attr,
-            target: T.FieldFactory,
-            args: [:name, :fun],
-            schema: [
-              name: [
-                type: :atom,
-                required: true
-              ],
-              fun: [
-                type: {:fun, 0},
-                required: true
-              ]
-            ]
-          }
+          T.FieldFactory.entity()
         ]
       }
     ]
