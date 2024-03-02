@@ -39,6 +39,7 @@ defmodule Bed.Model.BankAccount do
     end
 
     factory :gen do
+      primary? true
     end
   end
 end
