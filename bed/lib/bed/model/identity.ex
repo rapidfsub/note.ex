@@ -20,7 +20,7 @@ defmodule Bed.Model.Identity do
   end
 
   relationships do
-    has_many :accounts, M.Account
+    has_many :bank_accounts, M.BankAccount
   end
 
   authentication do

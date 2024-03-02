@@ -1,13 +1,15 @@
-defmodule Bed.Model.Account do
+defmodule Bed.Model.BankAccount do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshFactory.ActionFactories]
+    extensions: [
+      AshFactory.ActionFactory
+    ]
 
   use Bed.Prelude
   use M.Template
 
   postgres do
-    table "account"
+    table "bank_account"
   end
 
   attributes do
@@ -16,7 +18,8 @@ defmodule Bed.Model.Account do
   end
 
   relationships do
-    belongs_to :identity, M.Identity
+    belongs_to :identity, M.Identity, writable?: false
+    has_many :bank_txns, M.BankTxn
   end
 
   actions do
@@ -31,6 +34,10 @@ defmodule Bed.Model.Account do
   end
 
   factories do
+    factory :empty do
+      attribute :balance, fn -> 0 end
+    end
+
     factory :gen do
     end
   end
