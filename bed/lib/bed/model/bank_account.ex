@@ -1,7 +1,9 @@
 defmodule Bed.Model.BankAccount do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshFactory.ActionFactory]
+    extensions: [
+      AshFactory.ActionFactory
+    ]
 
   use Bed.Prelude
   use M.Template
@@ -29,5 +31,14 @@ defmodule Bed.Model.BankAccount do
 
   code_interface do
     define :open
+  end
+
+  factories do
+    factory :empty do
+      attribute :balance, fn -> 0 end
+    end
+
+    factory :gen do
+    end
   end
 end
