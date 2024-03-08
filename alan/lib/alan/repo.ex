@@ -4,6 +4,6 @@ defmodule Alan.Repo do
 
   # Installs Postgres extensions that ash commonly uses
   def installed_extensions do
-    ~w[ash-functions uuid-ossp pg_trgm citext vector]
+    ~w[ash-functions uuid-ossp pg_trgm citext]
   end
 end

@@ -1,7 +1,9 @@
 defmodule Alan.Model do
+  use Alan.Prelude
   use Ash.Api
 
   resources do
-    resource Alan.Model.Post
+    resource M.Comment
+    resource M.Post
   end
 end
