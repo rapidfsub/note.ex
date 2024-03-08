@@ -14,7 +14,11 @@ defmodule Alan.Model.Post do
   end
 
   actions do
-    defaults [:create]
+    create :create do
+      primary? true
+      argument :comments, {:array, :map}
+      change manage_relationship(:comments, type: :direct_control)
+    end
   end
 
   code_interface do

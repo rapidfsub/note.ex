@@ -14,7 +14,7 @@ defmodule Alan.Model.Comment do
   end
 
   actions do
-    defaults [:create]
+    defaults [:create, :read, :update, :destroy]
   end
 
   code_interface do
