@@ -7,7 +7,5 @@ rm -rf priv/resource_snapshots
 # Regenerate migrations
 mix ash_postgres.generate_migrations
 
-# Run migrations if flag
-if echo $* | grep -e "-m" -q; then
-  mix ecto.migrate
-fi
+# Reset database
+mix ecto.reset

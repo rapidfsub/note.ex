@@ -1,4 +1,4 @@
-defmodule Alan.Repo.Migrations.Install5Extensions do
+defmodule Alan.Repo.Migrations.Install4Extensions do
   @moduledoc """
   Installs any extensions that are mentioned in the repo's `installed_extensions/0` callback
 
@@ -70,7 +70,6 @@ defmodule Alan.Repo.Migrations.Install5Extensions do
     execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
     execute("CREATE EXTENSION IF NOT EXISTS \"pg_trgm\"")
     execute("CREATE EXTENSION IF NOT EXISTS \"citext\"")
-    execute("CREATE EXTENSION IF NOT EXISTS \"vector\"")
   end
 
   def down do
@@ -83,6 +82,5 @@ defmodule Alan.Repo.Migrations.Install5Extensions do
     # execute("DROP EXTENSION IF EXISTS \"uuid-ossp\"")
     # execute("DROP EXTENSION IF EXISTS \"pg_trgm\"")
     # execute("DROP EXTENSION IF EXISTS \"citext\"")
-    # execute("DROP EXTENSION IF EXISTS \"vector\"")
   end
 end
