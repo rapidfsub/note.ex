@@ -84,7 +84,7 @@ defmodule AlanWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
-      import AlanWeb.CoreComponents
+      import AlanWeb.CoreComponents, only: [flash_group: 1]
       import AlanWeb.Gettext
 
       # Shortcut for generating JS commands
@@ -92,6 +92,9 @@ defmodule AlanWeb do
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())
+
+      ### added
+      use PetalComponents
     end
   end
 

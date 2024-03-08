@@ -36,6 +36,8 @@ defmodule Alan.MixProject do
       {:ash, ">= 0.0.0"},
       {:ash_phoenix, ">= 0.0.0"},
       {:ash_postgres, ">= 0.0.0"},
+      # added
+      {:petal_components, ">= 0.0.0"},
       # phoenix default deps
       {:phoenix, ">= 0.0.0"},
       {:phoenix_ecto, ">= 0.0.0"},
@@ -48,7 +50,7 @@ defmodule Alan.MixProject do
       {:phoenix_live_dashboard, ">= 0.0.0"},
       {:esbuild, ">= 0.0.0", runtime: Mix.env() == :dev},
       {:tailwind, ">= 0.0.0", runtime: Mix.env() == :dev},
-      {:heroicons,
+      {:tailwindlabs_heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",
        sparse: "optimized",

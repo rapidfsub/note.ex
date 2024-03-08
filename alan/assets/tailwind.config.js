@@ -5,17 +5,29 @@ const plugin = require("tailwindcss/plugin")
 const fs = require("fs")
 const path = require("path")
 
+const colors = require("tailwindcss/colors")
+
 module.exports = {
   content: [
     "./js/**/*.js",
     "../lib/alan_web.ex",
-    "../lib/alan_web/**/*.*ex"
+    "../lib/alan_web/**/*.*ex",
+    "../deps/petal_components/**/*.*ex",
   ],
   theme: {
     extend: {
+      // ADD THESE COLORS (can pick different ones from here: https://tailwindcss.com/docs/customizing-colors)
       colors: {
-        brand: "#FD4F00",
-      }
+        primary: colors.blue,
+        secondary: colors.pink,
+        success: colors.green,
+        danger: colors.red,
+        warning: colors.yellow,
+        info: colors.sky,
+
+        // Options: slate, gray, zinc, neutral, stone
+        gray: colors.gray,
+      },
     },
   },
   plugins: [
@@ -25,16 +37,16 @@ module.exports = {
     //
     //     <div class="phx-click-loading:animate-ping">
     //
-    plugin(({addVariant}) => addVariant("phx-no-feedback", [".phx-no-feedback&", ".phx-no-feedback &"])),
-    plugin(({addVariant}) => addVariant("phx-click-loading", [".phx-click-loading&", ".phx-click-loading &"])),
-    plugin(({addVariant}) => addVariant("phx-submit-loading", [".phx-submit-loading&", ".phx-submit-loading &"])),
-    plugin(({addVariant}) => addVariant("phx-change-loading", [".phx-change-loading&", ".phx-change-loading &"])),
+    plugin(({ addVariant }) => addVariant("phx-no-feedback", [".phx-no-feedback&", ".phx-no-feedback &"])),
+    plugin(({ addVariant }) => addVariant("phx-click-loading", [".phx-click-loading&", ".phx-click-loading &"])),
+    plugin(({ addVariant }) => addVariant("phx-submit-loading", [".phx-submit-loading&", ".phx-submit-loading &"])),
+    plugin(({ addVariant }) => addVariant("phx-change-loading", [".phx-change-loading&", ".phx-change-loading &"])),
 
     // Embeds Heroicons (https://heroicons.com) into your app.css bundle
     // See your `CoreComponents.icon/1` for more information.
     //
-    plugin(function({matchComponents, theme}) {
-      let iconsDir = path.join(__dirname, "../deps/heroicons/optimized")
+    plugin(function ({ matchComponents, theme }) {
+      let iconsDir = path.join(__dirname, "../deps/tailwindlabs_heroicons/optimized")
       let values = {}
       let icons = [
         ["", "/24/outline"],
@@ -45,11 +57,11 @@ module.exports = {
       icons.forEach(([suffix, dir]) => {
         fs.readdirSync(path.join(iconsDir, dir)).forEach(file => {
           let name = path.basename(file, ".svg") + suffix
-          values[name] = {name, fullPath: path.join(iconsDir, dir, file)}
+          values[name] = { name, fullPath: path.join(iconsDir, dir, file) }
         })
       })
       matchComponents({
-        "hero": ({name, fullPath}) => {
+        "hero": ({ name, fullPath }) => {
           let content = fs.readFileSync(fullPath).toString().replace(/\r?\n|\r/g, "")
           let size = theme("spacing.6")
           if (name.endsWith("-mini")) {
@@ -69,7 +81,7 @@ module.exports = {
             "height": size
           }
         }
-      }, {values})
+      }, { values })
     })
   ]
 }
