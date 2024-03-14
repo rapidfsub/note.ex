@@ -1,21 +1,24 @@
 defmodule LogLevel do
-  def to_label(level, legacy?)
-  def to_label(0, false), do: :trace
-  def to_label(1, _legacy), do: :debug
-  def to_label(2, _legacy), do: :info
-  def to_label(3, _legacy), do: :warning
-  def to_label(4, _legacy), do: :error
-  def to_label(5, false), do: :fatal
-  def to_label(_level, _legacy?), do: :unknown
-
-  def alert_recipient(level, legacy?) do
-    level |> to_label(legacy?) |> do_alert_recipient(legacy?)
+  def to_label(level, legacy?) do
+    cond do
+      level == 0 and not legacy? -> :trace
+      level == 1 -> :debug
+      level == 2 -> :info
+      level == 3 -> :warning
+      level == 4 -> :error
+      level == 5 and not legacy? -> :fatal
+      true -> :unknown
+    end
   end
 
-  defp do_alert_recipient(label, legacy?)
-  defp do_alert_recipient(:error, _legacy?), do: :ops
-  defp do_alert_recipient(:fatal, _legacy?), do: :ops
-  defp do_alert_recipient(:unknown, true), do: :dev1
-  defp do_alert_recipient(:unknown, false), do: :dev2
-  defp do_alert_recipient(_label, _legacy?), do: false
+  def alert_recipient(level, legacy?) do
+    label = level |> to_label(legacy?)
+
+    cond do
+      label in [:error, :fatal] -> :ops
+      label == :unknown and legacy? -> :dev1
+      label == :unknown -> :dev2
+      true -> false
+    end
+  end
 end
