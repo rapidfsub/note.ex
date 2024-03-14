@@ -1,21 +1,20 @@
 defmodule BirdCount do
   def today(list) do
-    # Please implement the today/1 function
+    list |> Enum.at(0)
   end
 
-  def increment_day_count(list) do
-    # Please implement the increment_day_count/1 function
-  end
+  def increment_day_count([]), do: [1]
+  def increment_day_count([head | tail]), do: [head + 1 | tail]
 
   def has_day_without_birds?(list) do
-    # Please implement the has_day_without_birds?/1 function
+    list |> Enum.member?(0)
   end
 
   def total(list) do
-    # Please implement the total/1 function
+    list |> Enum.sum()
   end
 
   def busy_days(list) do
-    # Please implement the busy_days/1 function
+    list |> Enum.count(&(5 <= &1))
   end
 end
